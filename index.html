@@ -3,17 +3,24 @@
 		<title>RANG - RandomAirlineNameGenerator</title>
 		
 		<script src="templates.js" type="text/javascript"></script>
+		<script src="nameGenerator.js" type="text/javascript"></script>
+		<script src="main.js" type="text/javascript"></script>
 	</head>
 	<body>
 		<div>
 			<h1>RANG</h1>
 			<h2>Random Airline Name Generator</h2>
 			<div>
+				<button id="next-button" onclick="updateName()">
+					Next
+				</button>
+			</div>
+			<div>
 				<span>Name generated:</span>
 				<span id="airlineName">LOADING</span>
 			</div>
-			
-			<script src="main.js" type="module"></script>
+
+			<script>main()</script>
 		</div>
 	</body>
 </html>

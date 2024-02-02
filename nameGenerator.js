@@ -12,7 +12,7 @@ function expand(template) {
 	return template
 }
 
-export function generateName() {
+function generateName() {
 	let template = choose(templates)
 	return expand(template)
 }
