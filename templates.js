@@ -1,10 +1,11 @@
+var grammar = {};
 
-var templates = [
-	'<adjective> airlines',
-	'Fly <adjective>',
-	'<adjective>jet',
+grammar.template = [
+	'(adjective) airlines',
+	'Fly (adjective)',
+	'(adjective)jet',
 ];
-var adjectives = [
+grammar.adjective = [
 	'blue',
 	'red',
 	'yellow',
