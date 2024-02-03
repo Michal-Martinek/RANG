@@ -1,32 +1,58 @@
 
+const FieldTypes = {
+	Expansion: 'Expansion',
+	Optional: 'Optional',
+}
 // helpers ----------------------------------------
+function randint(upperBound=2) {
+	return Math.floor(Math.random() * upperBound)
+}
 function choose(l) {
-	let idx = Math.floor(Math.random() * l.length)
-	return l[idx]
+	return l[randint(l.length)]
 }
 function getErrorStr(msg, value='') {
 	if (value) msg += " '" + value + "'";
 	console.error(msg)
-	return '<b style="color:red">' + msg + '</b>';
+	return '<b style="color:red">&nbsp;' + msg + '&nbsp;</b>';
+}
+// impl ----------------------------------------------
+function getRegex(type) {
+	console.assert(Object.keys(FieldTypes).length == 2)
+	if (type == FieldTypes.Expansion) return /\((\w+)\)/gu;
+	if (type == FieldTypes.Optional) return /\[([^\]]+)\]/gu;
 }
 
-function expandField(grammar, field, name) {
+function expandField(grammar, type, field, name) {
 	let expanded = ''
-	if (typeof(grammar[name]) == 'undefined') {
-		expanded = getErrorStr('UNDEFINED field', name);
-	} else if (typeof(grammar[name]) == 'string') {
-		expanded = grammar[name];
-	} else if (Array.isArray(grammar[name])) {
-		expanded = choose(grammar[name]);
+	if (type == FieldTypes.Expansion) {
+		if (typeof(grammar[name]) == 'undefined') {
+			expanded = getErrorStr('UNDEFINED field', name);
+		} else if (typeof(grammar[name]) == 'string') {
+			expanded = grammar[name];
+		} else if (Array.isArray(grammar[name])) {
+			expanded = choose(grammar[name]);
+		} else {
+			expanded = getErrorStr('UNREACHABLE');
+		}
+	} else if (type == FieldTypes.Optional) {
+		if (randint()) expanded = name
 	} else {
-		expanded = getErrorStr('UNREACHABLE');
+		expanded = getErrorStr('UNREACHABLE')
 	}
 	return expanded
 }
+function replace(template, type) {
+	return template.replace(getRegex(type), expandField.bind(this, grammar, type))
+}
 function expandTemplate(template, maxDepth=100) {
 	let i = 0;
-	while (template.indexOf('(') >= 0 && i++ <= maxDepth) {
-		template = template.replace(/\(([a-zA-Z0-9]+)\)/g, expandField.bind(this, grammar));
+	while (i++ <= maxDepth) {
+		     if (template.indexOf('(') >= 0) template = replace(template, FieldTypes.Expansion);
+		else if (template.indexOf('[') >= 0) template = replace(template, FieldTypes.Optional);
+		else break;
+	}
+	if (i >= maxDepth) {
+		template = getErrorStr('EXCEEDED MAX DEPTH with', template)
 	}
 	return template
 }
