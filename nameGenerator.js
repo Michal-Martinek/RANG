@@ -48,7 +48,7 @@ function expandTemplate(template, maxDepth=100) {
 	let i = 0;
 	while (i++ <= maxDepth) {
 		     if (template.indexOf('(') >= 0) template = replace(template, FieldTypes.Expansion);
-		else if (template.indexOf('[') >= 0) template = replace(template, FieldTypes.Optional);
+		else if (template.indexOf('[') >= 0) template = replace(template, FieldTypes.Optional); // TODO: use the same regex here as in replacing
 		else break;
 	}
 	if (i >= maxDepth) {

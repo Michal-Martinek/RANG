@@ -6,7 +6,8 @@ grammar.template = [
 	'Fly (adjective)',
 	'(adjective)jet',
 	'(adjective)wings',
-	'Aero[ ](adjective)',
+	'Aer[o][ ](adjective)',
+	'Air[ ](adjective)'
 ];
 
-grammar.adjective = '(material)'
+grammar.adjective = ['(material)', '(number)']
