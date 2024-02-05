@@ -2,7 +2,9 @@
 const FieldTypes = {
 	Expansion: 'Expansion',
 	Optional: 'Optional',
+	Single: 'Single',
 }
+var remainingSingleFields = 0;
 // helpers ----------------------------------------
 function randint(upperBound=2) {
 	return Math.floor(Math.random() * upperBound)
@@ -17,9 +19,10 @@ function getErrorStr(msg, value='') {
 }
 // impl ----------------------------------------------
 function getRegex(type) {
-	console.assert(Object.keys(FieldTypes).length == 2)
-	if (type == FieldTypes.Expansion) return /\((\w+)\)/gu;
-	if (type == FieldTypes.Optional) return /\[([^\]]+)\]/gu;
+	console.assert(Object.keys(FieldTypes).length == 3)
+	if (type == FieldTypes.Expansion) return /\((\w+)\)/u;
+	if (type == FieldTypes.Optional) return /\[([^\]]*)\]/u;
+	if (type == FieldTypes.Single) return /\{([^\}]*)\}/gu;
 }
 
 function expandField(grammar, type, field, name) {
@@ -36,19 +39,27 @@ function expandField(grammar, type, field, name) {
 		}
 	} else if (type == FieldTypes.Optional) {
 		if (randint()) expanded = name
+	} else if (type == FieldTypes.Single) {
+		if (!remainingSingleFields) return ''
+		if (Math.random() <= 1 / remainingSingleFields) {
+			expanded = name;
+			remainingSingleFields = 0
+		} else remainingSingleFields--;
 	} else {
 		expanded = getErrorStr('UNREACHABLE')
 	}
 	return expanded
 }
 function replace(template, type) {
+	if (type === FieldTypes.Single) remainingSingleFields = template.match(/\{/g).length
 	return template.replace(getRegex(type), expandField.bind(this, grammar, type))
 }
 function expandTemplate(template, maxDepth=100) {
 	let i = 0;
 	while (i++ <= maxDepth) {
-		     if (template.indexOf('(') >= 0) template = replace(template, FieldTypes.Expansion);
+		if (template.indexOf('{') >= 0) template = replace(template, FieldTypes.Single);
 		else if (template.indexOf('[') >= 0) template = replace(template, FieldTypes.Optional); // TODO: use the same regex here as in replacing
+		else if (template.indexOf('(') >= 0) template = replace(template, FieldTypes.Expansion);
 		else break;
 	}
 	if (i >= maxDepth) {

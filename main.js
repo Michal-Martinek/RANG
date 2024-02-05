@@ -6,7 +6,7 @@ function updateNames() {
 	elem.innerHTML = ''
 	for (let i = 0; i < nameCount; ++i) {
 		let e = document.createElement('p')
-		e.innerText = generateName()
+		e.innerHTML = generateName()
 		elem.appendChild(e)
 	}
 }
