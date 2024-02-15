@@ -1,5 +1,6 @@
 
-grammar.number = [
+grammar.number = ['(numeral)', '(digit)', '(greek)', '(otherNumber)']
+grammar.numeral = [
 	"zero",
 	"one",
 	"two",
@@ -13,23 +14,27 @@ grammar.number = [
 	"ten",
 	"eleven",
 	"twelve",
-	"thirteen",
-	"fourteen",
-	"fifteen",
-	"sixteen",
-	"seventeen",
-	"eighteen",
-	"nineteen",
-	"twenty",
-	"thirty",
-	"forty",
-	"fifty",
-	"sixty",
-	"seventy",
-	"eighty",
-	"ninety",
 	"hundred",
 	"thousand",
 	"milion",
-	"bilion",
+]
+
+grammar.digit = Array.from('123456789')
+
+grammar.greek = [
+	"mono",
+	"tri",
+	"tetra",
+	"penta",
+	"hexa",
+	"hepta",
+	"octa",
+]
+
+grammar.otherNumber = [
+	"first",
+	"second",
+
+	"double",
+	"triple"
 ]
