@@ -11,4 +11,4 @@ grammar.template = [
 	'{Avia}(adjective){avia}',
 ];
 
-grammar.adjective = ['(material)', '(number)']
+grammar.adjective = ['(material)', '(number)', '(state)']
