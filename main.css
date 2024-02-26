@@ -1,6 +1,35 @@
 
+body {
+	background-color: beige;
+}
+#content {
+	background-color: darkgray;
+	border: 10px solid black;
+	border-radius: 30px;
+
+	padding: 20px;
+	width: 70%;
+	margin: auto;
+	margin-top: 5%;
+
+	text-align: center;
+}
+
+h1, h2, h3, h4 {
+	margin: 0;
+}
+h2 {
+	margin-top: .5em;
+}
+#buttons {
+	margin: 1em;
+}
+
+#results {
+	font-size: 1.25em;
+}
 #airline-names {
-	margin: 10px 20px;
+	margin: 10px;
 }
 #airline-names p {
 	margin: 2px;
